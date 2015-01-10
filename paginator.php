@@ -8,8 +8,8 @@ Class Paginator{
     private $left_boundary;
     private $right_boundary;
     private $pages = array();
-    private $leftHasEllipsis = false; // Variável para saber se o lado esquerdo tem ou não '...'
-    private $rightHasEllipsis = false; // Variável para saber se o lado direito tem ou não '...'
+    private $leftHasEllipsis = false; // Variable to store if the left side has '...'
+    private $rightHasEllipsis = false; // Variable to store if the right side has '...'
     
     public function __construct($current_page, $total_pages, $boundaries = 1, $around = 1){
         $this->current_page = $current_page;
@@ -22,35 +22,35 @@ Class Paginator{
     
     private function isWithinAround($page){
         if($page <= $this->current_page + $this->around AND $page >= $this->current_page - $this->around){ // Verificar se faz parte do around
-            $this->pages[] = $page; // Adicionar o valor do contador ao array de páginas
+            $this->pages[] = $page; // Add the counter's value to the page array
         }
     }
     
     private function isWithinLeftBoundaries($page){
-        if($page > 0 && $page <= $this->left_boundary){ // Verificar se faz parte dos boundaries esquerdos
-            $this->pages[] = $page; // Adicionar o valor do contador ao array de páginas
-        } elseif(!$this->leftHasEllipsis) { // Se não houver nenhum '...'  do lado esquerdo 
-            $this->pages[] =  '...'; // Meter um '...'
-            $this->leftHasEllipsis = true; // mudar o valor para true para saber que já existe um '...' na parte esquerda
+        if($page > 0 && $page <= $this->left_boundary){ // Check if it is between the left boundaries
+            $this->pages[] = $page; // Add counter's value to page array
+        } elseif(!$this->leftHasEllipsis) { // if there's no '...'  on the left side
+            $this->pages[] =  '...'; // Add '...'
+            $this->leftHasEllipsis = true; // change variable to true because there is now an ellipsis on the left side
         } 
     }
     
     private function isWithinRightBoundaries($page){
-        if($page > $this->right_boundary && $page <= $this->total_pages){ // Verficar se faz parte dos boundaries direitos
-            $this->pages[] = $page; // Adicionar o valor do contador ao array de páginas
-        } elseif(!$this->rightHasEllipsis) { // Se não houver nenhum '...' do lado direito 
-            $this->pages[] = '...'; // Meter um '...'
-            $this->rightHasEllipsis = true; // mudar o valor para true para saber que já existe um '...' na parte direita
+        if($page > $this->right_boundary && $page <= $this->total_pages){ // Check if is between the right boundaries
+            $this->pages[] = $page; // Add counter's value to page array
+        } elseif(!$this->rightHasEllipsis) { // if there's no '...' on the right side
+            $this->pages[] = '...'; // Add '...'
+            $this->rightHasEllipsis = true; // change variable to true because there is now an ellipsis on the right side
         }
     }
     
     private function processPages(){
-        for($i = 1; $i <= $this->total_pages; ++$i){ // Iniciar Loop
-            if($i < $this->current_page - $this->around){ // Se o contador for inferior à página corrente - o around
+        for($i = 1; $i <= $this->total_pages; ++$i){ // Begin Loop
+            if($i < $this->current_page - $this->around){ // if the counter is smaller than the current page minus around
                 $this->isWithinLeftBoundaries($i);
-            } elseif($i > $this->current_page + $this->around){ // Se o contador for superior à página corrente + o around
+            } elseif($i > $this->current_page + $this->around){ // if the counter is bigger than the current page plus around
                 $this->isWithinRightBoundaries($i);
-            } else { // Se o contador for igual à página corrente
+            } else { // if the counter is the same as the current page
                 $this->isWithinAround($i);
             }
         }
